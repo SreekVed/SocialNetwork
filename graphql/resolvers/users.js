@@ -8,9 +8,6 @@ module.exports = {
 
     Mutation : {
         async register(_, {registerInput : {username, password, confirmPassword, email}}) {
-            // TODO validate user data
-            // TODO Make sure user ID is unique
-            // TODO Hash password and create auth token
 
             const {valid, errors} = validateRegisterInput(username, password, confirmPassword, email)
 

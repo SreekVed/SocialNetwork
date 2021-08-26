@@ -3,11 +3,14 @@ const gql = require('graphql-tag')
 const typeDefs = gql`
     type Query {
         getPosts : [Post]
+        getPost(postId : ID!) : Post
     }
 
     type Mutation{
         register(registerInput : RegisterInput!) : User!
         login(username : String!, password : String!) : User!
+        createPost(body : String!) : Post!
+        deletePost(postId : ID!) : String!
     }
 
     type User {

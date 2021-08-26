@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const {AuthenticationError} = require('apollo-server')
 
 const {SECRET_KEY} = require('./config')
 
@@ -45,4 +46,22 @@ module.exports.generateToken = function(user){
         username : user.username
     }, SECRET_KEY, {expiresIn : '1h'})
 
+}
+
+module.exports.verifyAuth = function(context){
+    const header = context.req.headers.authorization
+    if(header){
+        const token = header.split('Bearer ')[1]
+        if(token) {
+            try{
+                const user = jwt.verify(token, SECRET_KEY)
+                return user
+            }
+            catch(err){
+                throw new AuthenticationError('Invalid/Expired Token')
+            }
+        }
+        else throw new AuthenticationError('Invalid Token Format')
+    }
+    else throw new AuthenticationError('No Authentication Header Provided')
 }
