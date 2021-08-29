@@ -56,10 +56,6 @@ export default function PostCard({
   );
 }
 
-function likePost(){
+function likePost() {}
 
-}
-
-function commentPost(){
-    
-}
+function commentPost() {}

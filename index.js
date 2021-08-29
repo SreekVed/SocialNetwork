@@ -1,19 +1,19 @@
-const { ApolloServer } = require('apollo-server')
-const mongoose = require('mongoose')
+const { ApolloServer } = require("apollo-server");
+const mongoose = require("mongoose");
 
-const { MONGODB } = require('./config')
-const typeDefs = require('./graphql/typeDefs')
-const resolvers = require('./graphql/resolvers/index')
+const { MONGODB } = require("./config");
+const typeDefs = require("./graphql/typeDefs");
+const resolvers = require("./graphql/resolvers/index");
 
 const server = new ApolloServer({
-    typeDefs, 
-    resolvers,
-    context : ({req}) => ({req})
-})
+  typeDefs,
+  resolvers,
+  context: ({ req }) => ({ req }),
+});
 
-mongoose.connect(MONGODB, {useNewUrlParser : true}).then(() => {    
-    return server.listen({port : 5000})
-    }
-).then(
-    res => console.log(`Server running at ${res.url}`)
-)
+mongoose
+  .connect(MONGODB, { useNewUrlParser: true })
+  .then(() => {
+    return server.listen({ port: 5000 });
+  })
+  .then((res) => console.log(`Server running at ${res.url}`));

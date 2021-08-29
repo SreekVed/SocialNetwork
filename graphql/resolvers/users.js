@@ -1,76 +1,81 @@
-const bcrypt = require('bcryptjs')
-const {UserInputError} = require('apollo-server')
+const bcrypt = require("bcryptjs");
+const { UserInputError } = require("apollo-server");
 
-const User = require('../../models/User')
-const {validateRegisterInput, validateLoginInput, generateToken} = require('../../utils')
+const User = require("../../models/User");
+const {
+  validateRegisterInput,
+  validateLoginInput,
+  generateToken,
+} = require("../../utils");
 
 module.exports = {
+  Mutation: {
+    async register(
+      _,
+      { registerInput: { username, password, confirmPassword, email } }
+    ) {
+      const { valid, errors } = validateRegisterInput(
+        username,
+        password,
+        confirmPassword,
+        email
+      );
 
-    Mutation : {
-        async register(_, {registerInput : {username, password, confirmPassword, email}}) {
+      if (!valid) throw new UserInputError("Errors", { errors });
 
-            const {valid, errors} = validateRegisterInput(username, password, confirmPassword, email)
+      const user = await User.findOne({ username });
 
-            if(!valid) throw new UserInputError('Errors', {errors})
+      if (user) {
+        errors.username = "This username is taken";
+        throw new UserInputError("Username is already taken", { errors });
+      }
 
-            const user = await User.findOne({username})
+      password = await bcrypt.hash(password, 12);
 
-            if(user){
-                errors.username = 'This username is taken'
-                throw new UserInputError('Username is already taken', {errors})
-            }
+      const newUser = new User({
+        username,
+        password,
+        email,
+        createdAt: new Date().toISOString(),
+      });
 
-            password = await bcrypt.hash(password, 12)
+      const res = await newUser.save();
 
-            const newUser = new User({
-                username,
-                password,
-                email,
-                createdAt : new Date().toISOString()
-            })
+      const token = generateToken(res);
 
-            const res = await newUser.save()
+      return {
+        ...res._doc,
+        id: res._id,
+        token,
+      };
+    },
 
-            const token = generateToken(res)
+    async login(_, { username, password }) {
+      const { valid, errors } = validateLoginInput(username, password);
 
-            return {
-                ...res._doc,
-                id : res._id,
-                token
-            }
+      if (!valid) throw new UserInputError("Errors", { errors });
 
-        },
+      const user = await User.findOne({ username });
 
-        async login(_, {username, password}){
+      if (!user) {
+        errors.username = "Invalid Username";
+        throw new UserInputError("Invalid credentials", { errors });
+      }
 
-            const {valid, errors} = validateLoginInput(username, password)
+      const match = await bcrypt.compare(password, user.password);
 
-            if(!valid) throw new UserInputError('Errors', {errors})
+      if (!match) {
+        errors.password = "Invalid Password";
+        throw new UserInputError("Invalid credentials", { errors });
+      }
 
-            const user = await User.findOne({username})
+      const token = generateToken(user);
 
-            if(!user) {
-                errors.auth = 'Invalid username'
-                throw new UserInputError('Invalid credentials', {errors})
-            }
-
-            const match = await bcrypt.compare(password, user.password)
-
-            if(!match){
-                errors.auth = 'Invalid password'
-                throw new UserInputError('Invalid credentials', {errors})
-            }
-
-            const token = generateToken(user)
-
-            return {
-                ...user._doc,
-                id : user._id,
-                token
-            }
-
-        }
-        
-    }
-
-}
+      return {
+        ...user._doc,
+        id: user._id,
+        token,
+      };
+    },
+  },
+};
