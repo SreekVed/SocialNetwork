@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import { Grid, Loader } from "semantic-ui-react";
 
 import PostCard from "../components/PostCard";
+import PostForm from "../components/PostForm.js";
+import { AuthContext } from "../auth";
 
 export default function Home() {
+  const { user } = useContext(AuthContext);
+
   const { loading, error, data } = useQuery(FETCH_POSTS_QUERY);
 
   if (error)
@@ -18,8 +22,12 @@ export default function Home() {
   return (
     <Grid columns={2} stackable>
       <Grid.Row centered>
-        <h1 style={{ marginTop: "10px" }}>Sreek's Social Network</h1>
+        <h1 style={{ marginTop: "10px" }}>
+          Sreek's Social Network
+          <hr />
+        </h1>
       </Grid.Row>
+      {user && <PostForm />}
       <Grid.Row>
         {loading ? (
           <Loader active style={{ marginTop: "20vh" }}>
@@ -38,7 +46,7 @@ export default function Home() {
   );
 }
 
-const FETCH_POSTS_QUERY = gql`
+export const FETCH_POSTS_QUERY = gql`
   query {
     getPosts {
       id
