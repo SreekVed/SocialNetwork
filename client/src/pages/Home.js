@@ -1,14 +1,19 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import { Grid } from "semantic-ui-react";
+import { Grid, Loader } from "semantic-ui-react";
 
 import PostCard from "../components/PostCard";
 
 export default function Home() {
   const { loading, error, data } = useQuery(FETCH_POSTS_QUERY);
 
-  if (error) return <h1>Error !</h1>;
+  if (error)
+    return (
+      <h2 style={{ marginTop: "20vh", color: "red", textAlign: "center" }}>
+        404 Error
+      </h2>
+    );
 
   return (
     <Grid columns={2} stackable>
@@ -17,7 +22,9 @@ export default function Home() {
       </Grid.Row>
       <Grid.Row>
         {loading ? (
-          <h1>Loading Posts...</h1>
+          <Loader active style={{ marginTop: "20vh" }}>
+            Loading Posts
+          </Loader>
         ) : (
           data &&
           data.getPosts.map((post) => (
