@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import { Grid, Loader } from "semantic-ui-react";
+import { Grid, Loader, Transition } from "semantic-ui-react";
 
 import PostCard from "../components/PostCard";
 import PostForm from "../components/PostForm.js";
@@ -34,12 +34,14 @@ export default function Home() {
             Loading Posts
           </Loader>
         ) : (
-          data &&
-          data.getPosts.map((post) => (
-            <Grid.Column key={post.id} style={{ marginBottom: "20px" }}>
-              <PostCard post={post} />
-            </Grid.Column>
-          ))
+          <Transition.Group>
+            {data &&
+              data.getPosts.map((post) => (
+                <Grid.Column key={post.id} style={{ marginBottom: "20px" }}>
+                  <PostCard post={post} />
+                </Grid.Column>
+              ))}
+          </Transition.Group>
         )}
       </Grid.Row>
     </Grid>

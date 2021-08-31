@@ -22,8 +22,8 @@ export default function PostForm() {
       });
       setBody("");
     },
-    onError() {
-      setError(true);
+    onError(err) {
+      setError(window.innerWidth >= 500 ? err.message : true);
     },
   });
 
@@ -50,7 +50,7 @@ export default function PostForm() {
           </Form.Field>
           <Form.Button
             type="submit"
-            content="Post"
+            content={"Post"}
             icon="add"
             color="blue"
             labelPosition="left"

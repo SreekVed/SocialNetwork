@@ -54,7 +54,7 @@ module.exports.generateToken = function (user) {
       username: user.username,
     },
     SECRET_KEY,
-    { expiresIn: "1h" }
+    { expiresIn: "1d" }
   );
 };
 
