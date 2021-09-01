@@ -29,9 +29,9 @@ export default function Post(props) {
     update() {
       setCommentBody("");
     },
-    onError(e){
-        setErr(window.innerWidth >= 500 ? e.message : true)
-    }
+    onError(e) {
+      setErr(window.innerWidth >= 500 ? e.message : true);
+    },
   });
 
   const onSubmit = (event) => {
@@ -98,29 +98,29 @@ export default function Post(props) {
           </Card>
           {(user || commentCount > 0) && <h2>Comments</h2>}
           {user && (
-              <Form onSubmit={onSubmit}>
-                <Form.Group>
-                  <Form.Field>
-                    <Form.Input
-                      placeholder="Post a New Comment !"
-                      name="commentBody"
-                      onChange={(event) => {
-                        setCommentBody(event.target.value);
-                        if (event.target.value) setErr(false);
-                      }}
-                      value={commentBody}
-                      error={err}
-                    />
-                  </Form.Field>
-                  <Form.Button
-                    type="submit"
-                    content={window.innerWidth >= 1000 ? "Post" : undefined}
-                    icon="add"
-                    color="blue"
-                    labelPosition={window.innerWidth >= 1000 ? "left" : undefined}
+            <Form onSubmit={onSubmit}>
+              <Form.Group>
+                <Form.Field>
+                  <Form.Input
+                    placeholder="Post a New Comment !"
+                    name="commentBody"
+                    onChange={(event) => {
+                      setCommentBody(event.target.value);
+                      if (event.target.value) setErr(false);
+                    }}
+                    value={commentBody}
+                    error={err}
                   />
-                </Form.Group>
-              </Form>
+                </Form.Field>
+                <Form.Button
+                  type="submit"
+                  content={window.innerWidth >= 1000 ? "Post" : undefined}
+                  icon="add"
+                  color="blue"
+                  labelPosition={window.innerWidth >= 1000 ? "left" : undefined}
+                />
+              </Form.Group>
+            </Form>
           )}
           <Transition.Group>
             {comments.map((comment) => (
@@ -167,16 +167,16 @@ const FETCH_POST_QUERY = gql`
 `;
 
 const CREATE_COMMENT_MUTATION = gql`
-    mutation($postId: ID!, $body: String!){
-        createComment(postId : $postId, body : $body){
-            id
-            comments {
-                id
-                body
-                createdAt
-                username
-            }
-            commentCount
-        }
+  mutation ($postId: ID!, $body: String!) {
+    createComment(postId: $postId, body: $body) {
+      id
+      comments {
+        id
+        body
+        createdAt
+        username
+      }
+      commentCount
     }
+  }
 `;

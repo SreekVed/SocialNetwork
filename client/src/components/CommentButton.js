@@ -10,7 +10,7 @@ export default function CommentButton({
     <Button
       as={Link}
       to={user ? `/posts/${id}` : "/login"}
-      onClick={()=>console.log("comment")}
+      onClick={() => console.log("comment")}
       basic={
         !(
           user && comments.find((comment) => comment.username === user.username)

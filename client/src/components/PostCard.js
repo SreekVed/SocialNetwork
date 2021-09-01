@@ -37,9 +37,7 @@ export default function PostCard({
 
         <CommentButton user={user} post={{ id, comments, commentCount }} />
 
-        {user && user.username === username && (
-          <DeleteButton postId={id}/>
-        )}
+        {user && user.username === username && <DeleteButton postId={id} />}
       </Card.Content>
     </Card>
   );

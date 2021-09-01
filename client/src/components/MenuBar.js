@@ -33,7 +33,7 @@ export default function MenuBar() {
         onConfirm={() => {
           logout();
           setActiveItem("home");
-          setConfirmOpen(false)
+          setConfirmOpen(false);
         }}
         content="Are you sure you want to logout ?"
       />

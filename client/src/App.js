@@ -9,7 +9,7 @@ import { AuthProvider } from "./auth";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Post from "./pages/Post"
+import Post from "./pages/Post";
 import MenuBar from "./components/MenuBar";
 import AuthRoute from "./AuthRoute";
 

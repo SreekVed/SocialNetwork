@@ -30,9 +30,9 @@ export default function DeleteButton({ postId, commentId, callback }) {
       if (callback) callback();
     },
 
-    onError(err){
-        alert(err.message)
-    }
+    onError(err) {
+      alert(err.message);
+    },
   });
 
   return (
@@ -50,7 +50,9 @@ export default function DeleteButton({ postId, commentId, callback }) {
           setConfirmOpen(false);
         }}
         onConfirm={deletePostOrComment}
-        content={`Are you sure you want to delete this ${commentId ? 'comment' : 'post'} ?`}
+        content={`Are you sure you want to delete this ${
+          commentId ? "comment" : "post"
+        } ?`}
       />
     </>
   );

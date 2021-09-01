@@ -64,7 +64,6 @@ export default function Login(props) {
       <Button type="submit" primary style={{ margin: "auto", display: "flex" }}>
         Login
       </Button>
-      
     </Form>
   );
 }

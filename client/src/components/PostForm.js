@@ -54,7 +54,7 @@ export default function PostForm() {
             icon="add"
             color="blue"
             labelPosition={window.innerWidth >= 1000 ? "left" : undefined}
-            />
+          />
         </Form.Group>
       </Form>
     </Grid.Row>
