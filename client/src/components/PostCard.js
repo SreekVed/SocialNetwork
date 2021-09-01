@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
-import { Card, Image, Button } from "semantic-ui-react";
+import { Card, Image } from "semantic-ui-react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../auth";
 import LikeButton from "../components/LikeButton";
+import CommentButton from "./CommentButton";
+import DeleteButton from "./DeleteButton";
 
 export default function PostCard({
   post: {
@@ -22,17 +24,10 @@ export default function PostCard({
 
   const random = Math.floor(Math.random() * 3 + 1);
 
-  const icon =
-    random === 1 ? "matthew.png" : random === 2 ? "molly.png" : "daniel.jpg";
-
   return (
     <Card fluid>
-      <Card.Content as={Link} to={user ? `/posts/${id}` : "/login"}>
-        <Image
-          floated="right"
-          size="mini"
-          src={`https://react.semantic-ui.com/images/avatar/large/${icon}`}
-        />
+      <Card.Content as={Link} to={`/posts/${id}`}>
+        <Image floated="right" size="mini" src={`/avatars/${random}.png`} />
         <Card.Header>{username}</Card.Header>
         <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
         <Card.Description>{body}</Card.Description>
@@ -40,40 +35,12 @@ export default function PostCard({
       <Card.Content extra>
         <LikeButton user={user} post={{ id, likes, likeCount }} />
 
-        <Button
-          as={Link}
-          to={user ? `/posts/${id}` : "/login"}
-          onClick={commentPost}
-          basic={
-            !(
-              user &&
-              comments.find((comment) => comment.username === user.username)
-            )
-          }
-          color="green"
-          content={window.innerWidth >= 1000 ? "Comment" : ""}
-          icon="comments"
-          label={{
-            basic: true,
-            color: "green",
-            pointing: "left",
-            content: commentCount,
-          }}
-        />
+        <CommentButton user={user} post={{ id, comments, commentCount }} />
 
         {user && user.username === username && (
-          <Button
-            floated="right"
-            color="red"
-            icon="trash"
-            onClick={deletePost}
-          />
+          <DeleteButton postId={id}/>
         )}
       </Card.Content>
     </Card>
   );
 }
-
-function commentPost() {}
-
-function deletePost() {}

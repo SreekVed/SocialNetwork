@@ -18,16 +18,10 @@ export default function LikeButton({ post: { id, likes, likeCount }, user }) {
     },
   });
 
-  const redirect = user
-    ? null
-    : {
-        as: Link,
-        to: "/login",
-      };
-
   return (
     <Button
-      {...redirect}
+      as={user ? undefined : Link}
+      to={user ? undefined : "/login"}
       style={{ marginRight: "5%" }}
       onClick={user && likePost}
       basic={!liked}

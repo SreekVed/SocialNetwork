@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Menu } from "semantic-ui-react";
+import { Confirm, Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../auth";
@@ -9,26 +9,37 @@ export default function MenuBar() {
 
   const path = window.location.pathname.substr(1);
 
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
   const [activeItem, setActiveItem] = useState(path ? path : "home");
 
   const handleItemClick = (e, { name }) => setActiveItem(name);
 
   const menuBar = user ? (
-    <Menu pointing secondary size="massive" color="teal">
-      <Menu.Item name={user.username} active as={Link} to="/" />
+    <>
+      <Menu pointing secondary size="massive" color="yellow">
+        <Menu.Item name={user.username} active as={Link} to="/" />
 
-      <Menu.Menu position="right">
-        <Menu.Item
-          name="logout"
-          onClick={() => {
-            logout();
-            setActiveItem("home");
-          }}
-        />
-      </Menu.Menu>
-    </Menu>
+        <Menu.Menu position="right">
+          <Menu.Item name="logout" onClick={() => setConfirmOpen(true)} />
+        </Menu.Menu>
+      </Menu>
+
+      <Confirm
+        open={confirmOpen}
+        onCancel={() => {
+          setConfirmOpen(false);
+        }}
+        onConfirm={() => {
+          logout();
+          setActiveItem("home");
+          setConfirmOpen(false)
+        }}
+        content="Are you sure you want to logout ?"
+      />
+    </>
   ) : (
-    <Menu pointing secondary size="massive" color="teal">
+    <Menu pointing secondary size="massive" color="yellow">
       <Menu.Item
         name="home"
         active={activeItem === "home"}

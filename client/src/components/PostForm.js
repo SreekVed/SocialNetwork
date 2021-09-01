@@ -50,11 +50,11 @@ export default function PostForm() {
           </Form.Field>
           <Form.Button
             type="submit"
-            content={"Post"}
+            content={window.innerWidth >= 1000 ? "Post" : undefined}
             icon="add"
             color="blue"
-            labelPosition="left"
-          />
+            labelPosition={window.innerWidth >= 1000 ? "left" : undefined}
+            />
         </Form.Group>
       </Form>
     </Grid.Row>
